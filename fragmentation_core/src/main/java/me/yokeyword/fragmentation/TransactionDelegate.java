@@ -1,5 +1,7 @@
 package me.yokeyword.fragmentation;
 
+import static androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -23,8 +25,6 @@ import me.yokeyword.fragmentation.helper.internal.ResultRecord;
 import me.yokeyword.fragmentation.helper.internal.TransactionRecord;
 import me.yokeyword.fragmentation.queue.Action;
 import me.yokeyword.fragmentation.queue.ActionQueue;
-
-import static androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 
 
 /**
@@ -301,14 +301,29 @@ class TransactionDelegate {
     }
 
 
-    private void removeTopFragment(FragmentManager fm) {
+    private void removeTopFragment(final FragmentManager fm) {
         try { // Safe popBackStack()
             ISupportFragment top = SupportHelper.getBackStackTopFragment(fm);
             if (top != null) {
-                fm.beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-                        .remove((Fragment) top)
-                        .commitAllowingStateLoss();
+                final Fragment topFragment = (Fragment) top;
+                Animation animation = AnimationUtils.loadAnimation(topFragment.getContext(), top.getFragmentAnimator().getExit());
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        fm.beginTransaction()
+                                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                                .remove(topFragment)
+                                .commitAllowingStateLoss();
+                    }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
+                });
+                animation.start();
+                // https://stackoverflow.com/questions/13982240/how-to-animate-fragment-removal
             }
         } catch (Exception ignored) {
 
