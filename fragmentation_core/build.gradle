@@ -1,5 +1,10 @@
-apply plugin: 'com.android.library'
-//apply plugin: 'com.novoda.bintray-release'
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
+
+group = 'me.yokeyword.fragmentation'
+version = '2.0'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -7,10 +12,14 @@ android {
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-
-        consumerProguardFiles 'proguard-rules.pro'
     }
 
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
 
     lintOptions {
         abortOnError false
@@ -21,13 +30,16 @@ dependencies {
     compileOnly "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
 }
 
-//publish {
-//    artifactId = 'fragmentationx-core'
-//    userOrg = rootProject.userOrg
-//    groupId = rootProject.groupId
-//    uploadName = 'Fragmentationx-Core'
-//    publishVersion = rootProject.publishVersion
-//    desc = rootProject.desc
-//    website = rootProject.website
-//    licences = rootProject.licences
-//}
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                from components.release
+                groupId = 'me.yokeyword.fragmentation'
+                artifactId = 'fragmentation_core'
+                version = '2.0'
+            }
+        }
+    }
+}
