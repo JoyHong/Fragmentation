@@ -36,20 +36,26 @@ android {
             }
         }
     }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    testImplementation 'junit:junit:4.12'
-    implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
-    implementation 'com.google.android.material:material:1.1.0-alpha02'
+    testImplementation 'junit:junit:4.13.2'
+    implementation "androidx.appcompat:appcompat:1.4.1"
+    implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
-//    api project(':fragmentation')
-//    api project(':fragmentation_swipeback')
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+    api project(':fragmentation')
+    api project(':fragmentation_swipeback')
 
-    api 'me.xuexuan:fragmentationx:1.0.6'
-    api 'me.xuexuan:fragmentationx-swipeback:1.0.6'
+//    api 'me.xuexuan:fragmentationx:1.0.6'
+//    api 'me.xuexuan:fragmentationx-swipeback:1.0.6'
     // EventBus
     api project(':eventbus_activity_scope')
     implementation 'org.greenrobot:eventbus:3.0.0'
