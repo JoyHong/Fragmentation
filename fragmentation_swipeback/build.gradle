@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-//apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -17,14 +16,18 @@ dependencies {
     compileOnly project(':fragmentation')
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/res'
+        }
+    }
+}
 
-//publish {
-//    artifactId = 'fragmentationx-swipeback'
-//    userOrg = rootProject.userOrg
-//    groupId = rootProject.groupId
-//    uploadName = 'Fragmentationx-Swipeback'
-//    publishVersion = rootProject.publishVersion
-//    desc = rootProject.desc
-//    website = rootProject.website
-//    licences = rootProject.licences
-//}
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.java, sourceSets.main.resources
+}

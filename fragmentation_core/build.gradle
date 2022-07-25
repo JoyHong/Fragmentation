@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -18,20 +17,6 @@ android {
         }
     }
 
-    afterEvaluate {
-        publishing {
-            publications {
-                // Creates a Maven publication called "release".
-                release(MavenPublication) {
-                    // You can then customize attributes of the publication as shown below.
-                    groupId = 'me.yokeyword.fragmentation'
-                    artifactId = 'fragmentation_core'
-                    version = '2.0'
-                }
-            }
-        }
-    }
-
     lintOptions {
         abortOnError false
     }
@@ -41,13 +26,18 @@ dependencies {
     compileOnly "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
 }
 
-//publish {
-//    artifactId = 'fragmentationx-core'
-//    userOrg = rootProject.userOrg
-//    groupId = rootProject.groupId
-//    uploadName = 'Fragmentationx-Core'
-//    publishVersion = rootProject.publishVersion
-//    desc = rootProject.desc
-//    website = rootProject.website
-//    licences = rootProject.licences
-//}
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/res'
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.java, sourceSets.main.resources
+}

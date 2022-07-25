@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-//apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -13,17 +12,20 @@ android {
 dependencies {
     compileOnly "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
     api project(':fragmentation_core')
-//    api 'me.xuexuan:fragmentationx-core:1.0.6'
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/res'
+        }
+    }
+}
 
-//publish {
-//    artifactId = 'fragmentationx'
-//    userOrg = rootProject.userOrg
-//    groupId = rootProject.groupId
-//    uploadName = 'Fragmentationx'
-//    publishVersion = rootProject.publishVersion
-//    desc = rootProject.desc
-//    website = rootProject.website
-//    licences = rootProject.licences
-//}
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.java, sourceSets.main.resources
+}
