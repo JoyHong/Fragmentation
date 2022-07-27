@@ -136,7 +136,12 @@ public class VisibleDelegate {
     }
 
     private void dispatchChildOnFragmentShownWhenNotResumed() {
-        FragmentManager fragmentManager = mFragment.getChildFragmentManager();
+        FragmentManager fragmentManager;
+        try {
+            fragmentManager = mFragment.getChildFragmentManager();
+        } catch (Throwable ignored) {
+            return;
+        }
         List<Fragment> childFragments = fragmentManager.getFragments();
         if (childFragments != null) {
             for (Fragment child : childFragments) {
