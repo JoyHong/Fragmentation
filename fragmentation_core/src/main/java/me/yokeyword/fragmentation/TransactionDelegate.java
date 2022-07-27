@@ -534,12 +534,22 @@ class TransactionDelegate {
         }
         container.removeViewInLayout(fromView);
         final ViewGroup mock = addMockView(fromView, container);
+        final int index = container.indexOfChild(mock);
 
 
         // 下面这个动画，是在新的fragment（to） 执行的时候，用mock去模拟上一个fragment（from）的退出动画
         to.getSupportDelegate().mEnterAnimListener = new SupportFragmentDelegate.EnterAnimListener() {
             @Override
             public void onEnterAnimStart() {
+                if (container.indexOfChild(mock) != index) {
+                    // 新的 fragment (to) add 后会插入到上一个 fragment 后
+                    // 此时 mock 的位置变成了最上面, 导致在动画的时候会覆盖在 to 界面上
+                    // 所以此时我们需要重新排序
+                    mock.removeViewInLayout(fromView);
+                    container.removeViewInLayout(mock);
+                    mock.addView(fromView);
+                    container.addView(mock, index);
+                }
 
                 mock.startAnimation(exitAnim);
                 mHandler.postDelayed(new Runnable() {
