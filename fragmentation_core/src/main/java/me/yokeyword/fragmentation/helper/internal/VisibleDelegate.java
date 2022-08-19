@@ -97,12 +97,9 @@ public class VisibleDelegate {
     public void onPause() {
         //界面还没有执行到initVisible 发出的任务taskDispatchSupportVisible，界面就已经pause。
         //为了让下次resume 时候，能正常的执行需要设置mAbortInitVisible ，来确保在resume的时候，可以执行完整initVisible
-        if (mIdleDispatchSupportVisible != null) {
-            Looper.myQueue().removeIdleHandler(mIdleDispatchSupportVisible);
-            mAbortInitVisible = true;
+        if (abortDispatchVisible()) {
             return;
         }
-
         if (mCurrentVisible && isFragmentVisible(mFragment)) {
             mNeedDispatch = false;
             mVisibleWhenLeave = true;
@@ -113,18 +110,21 @@ public class VisibleDelegate {
     }
 
     public void onHiddenChanged(boolean hidden) {
-        if (!hidden && !mFragment.isResumed()) {
+        if (hidden) {
+            // onResume -> onHiddenChanged(true)
+            // 此时需要 abort 一下, 否则最终还是 SupportVisible 状态
+            if (!abortDispatchVisible()) {
+                dispatchSupportVisible(false);
+            }
+            return;
+        }
+        if (!mFragment.isResumed()) {
             //Activity 不是resumed 状态，不用显示其下的fragment，只需设置标志位，待OnResume时 显示出来
             //if fragment is shown but not resumed, ignore...
             onFragmentShownWhenNotResumed();
             return;
         }
-        if (hidden) {
-            dispatchSupportVisible(false);
-        } else {
-            safeDispatchUserVisibleHint(true);
-
-        }
+        safeDispatchUserVisibleHint(true);
     }
 
     private void onFragmentShownWhenNotResumed() {
@@ -143,11 +143,9 @@ public class VisibleDelegate {
             return;
         }
         List<Fragment> childFragments = fragmentManager.getFragments();
-        if (childFragments != null) {
-            for (Fragment child : childFragments) {
-                if (child instanceof ISupportFragment && !child.isHidden() && child.getUserVisibleHint()) {
-                    ((ISupportFragment) child).getSupportDelegate().getVisibleDelegate().onFragmentShownWhenNotResumed();
-                }
+        for (Fragment child : childFragments) {
+            if (child instanceof ISupportFragment && !child.isHidden() && child.getUserVisibleHint()) {
+                ((ISupportFragment) child).getSupportDelegate().getVisibleDelegate().onFragmentShownWhenNotResumed();
             }
         }
     }
@@ -178,7 +176,6 @@ public class VisibleDelegate {
     }
 
     private void enqueueDispatchVisible() {
-
         mIdleDispatchSupportVisible = new MessageQueue.IdleHandler() {
             @Override
             public boolean queueIdle() {
@@ -187,9 +184,16 @@ public class VisibleDelegate {
                 return false;
             }
         };
-
         Looper.myQueue().addIdleHandler(mIdleDispatchSupportVisible);
+    }
 
+    private boolean abortDispatchVisible() {
+        if (mIdleDispatchSupportVisible != null) {
+            Looper.myQueue().removeIdleHandler(mIdleDispatchSupportVisible);
+            mAbortInitVisible = true;
+            return true;
+        }
+        return false;
     }
 
     private void dispatchSupportVisible(boolean visible) {
