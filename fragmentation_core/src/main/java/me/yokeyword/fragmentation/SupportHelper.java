@@ -30,7 +30,7 @@ public class SupportHelper {
         view.postDelayed(new Runnable() {
             @Override
             public void run() {
-                imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
+                imm.showSoftInput(view, 0);
             }
         }, SHOW_SPACE);
     }
