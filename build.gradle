@@ -27,7 +27,7 @@ ext {
     minSdkVersion = 14
     targetSdkVersion = 34
 
-    appCompatVersion = "1.2.0-rc01"
+    appCompatVersion = "1.6.1"
 
 //    userOrg = "jantxue"
 //    groupId = "me.xuexuan"
