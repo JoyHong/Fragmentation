@@ -7,7 +7,8 @@ group = 'me.yokeyword.fragmentation'
 version = '2.0'
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
+    namespace "me.yokeyword.fragmentation"
+    compileSdk rootProject.compileSdkVersion
 
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion
@@ -30,16 +31,16 @@ dependencies {
     compileOnly "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            // Creates a Maven publication called "release".
-            release(MavenPublication) {
-                from components.release
-                groupId = 'me.yokeyword.fragmentation'
-                artifactId = 'fragmentation_core'
-                version = '2.0'
-            }
-        }
-    }
-}
+//afterEvaluate {
+//    publishing {
+//        publications {
+//            // Creates a Maven publication called "release".
+//            release(MavenPublication) {
+//                from components.release
+//                groupId = 'me.yokeyword.fragmentation'
+//                artifactId = 'fragmentation_core'
+//                version = '2.0'
+//            }
+//        }
+//    }
+//}

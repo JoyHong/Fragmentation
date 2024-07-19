@@ -2,7 +2,8 @@ apply plugin: 'com.android.library'
 //apply plugin: 'com.novoda.bintray-release'
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
+    namespace "me.yokeyword.fragmentation_components"
+    compileSdk rootProject.compileSdkVersion
 
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion

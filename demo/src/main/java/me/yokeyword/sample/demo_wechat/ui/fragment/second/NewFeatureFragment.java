@@ -36,7 +36,7 @@ public class NewFeatureFragment extends BaseBackFragment {
             @Override
             public void onClick(View v) {
                 extraTransaction()
-                        .setCustomAnimations(R.anim.v_fragment_enter, 0, 0, R.anim.v_fragment_exit)
+                        .setCustomAnimations(me.yokeyword.fragmentation.R.anim.v_fragment_enter, 0, 0, me.yokeyword.fragmentation.R.anim.v_fragment_exit)
                         .startDontHideSelf(ViewFragment.newInstance());
             }
         });
@@ -48,8 +48,8 @@ public class NewFeatureFragment extends BaseBackFragment {
                 extraTransaction()
 //                        .setTag("CustomTag")
 //                        . ...
-                        .setCustomAnimations(R.anim.v_fragment_enter, R.anim.v_fragment_pop_exit,
-                                R.anim.v_fragment_pop_enter, R.anim.v_fragment_exit)
+                        .setCustomAnimations(me.yokeyword.fragmentation.R.anim.v_fragment_enter, me.yokeyword.fragmentation.R.anim.v_fragment_pop_exit,
+                                me.yokeyword.fragmentation.R.anim.v_fragment_pop_enter, me.yokeyword.fragmentation.R.anim.v_fragment_exit)
                         .start(CycleFragment.newInstance(0));
             }
         });
@@ -69,8 +69,8 @@ public class NewFeatureFragment extends BaseBackFragment {
             @Override
             public void onClick(View view) {
                 extraTransaction()
-                        .setCustomAnimations(R.anim.v_fragment_enter, R.anim.v_fragment_pop_exit,
-                                R.anim.v_fragment_pop_enter, R.anim.v_fragment_exit)
+                        .setCustomAnimations(me.yokeyword.fragmentation.R.anim.v_fragment_enter, me.yokeyword.fragmentation.R.anim.v_fragment_pop_exit,
+                                me.yokeyword.fragmentation.R.anim.v_fragment_pop_enter, me.yokeyword.fragmentation.R.anim.v_fragment_exit)
                         .dontAddToBackStack()
                         .start(DontAddStackFragment.newInstance());
             }

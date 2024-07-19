@@ -11,7 +11,8 @@ static def gitLatestTag() {
 }
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
+    namespace "me.yokeyword.sample"
+    compileSdk rootProject.compileSdkVersion
 
     defaultConfig {
         applicationId "me.xuexuan.fragmentation"

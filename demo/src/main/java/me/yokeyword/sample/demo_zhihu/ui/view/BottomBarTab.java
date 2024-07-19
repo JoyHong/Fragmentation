@@ -36,7 +36,7 @@ public class BottomBarTab extends FrameLayout {
 
     private void init(Context context, int icon) {
         mContext = context;
-        TypedArray typedArray = context.obtainStyledAttributes(new int[]{R.attr.selectableItemBackgroundBorderless});
+        TypedArray typedArray = context.obtainStyledAttributes(new int[]{android.R.attr.selectableItemBackgroundBorderless});
         Drawable drawable = typedArray.getDrawable(0);
         setBackgroundDrawable(drawable);
         typedArray.recycle();

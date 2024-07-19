@@ -54,33 +54,32 @@ public class HomeFragment extends BaseMainFragment implements Toolbar.OnMenuItem
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_anim:
-                final PopupMenu popupMenu = new PopupMenu(_mActivity, mToolbar, GravityCompat.END);
-                popupMenu.inflate(R.menu.home_pop);
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.action_anim_veritical:
-                                ((ISupportActivity) _mActivity).setFragmentAnimator(new DefaultVerticalAnimator());
-                                Toast.makeText(_mActivity, R.string.anim_v, Toast.LENGTH_SHORT).show();
-                                break;
-                            case R.id.action_anim_horizontal:
-                                ((ISupportActivity) _mActivity).setFragmentAnimator(new DefaultHorizontalAnimator());
-                                Toast.makeText(_mActivity, R.string.anim_h, Toast.LENGTH_SHORT).show();
-                                break;
-                            case R.id.action_anim_none:
-                                ((ISupportActivity) _mActivity).setFragmentAnimator(new DefaultNoAnimator());
-                                Toast.makeText(_mActivity, R.string.anim_none, Toast.LENGTH_SHORT).show();
-                                break;
+        if (item.getItemId() == R.id.action_anim) {
+            final PopupMenu popupMenu = new PopupMenu(_mActivity, mToolbar, GravityCompat.END);
+            popupMenu.inflate(R.menu.home_pop);
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    try {
+                        if (item.getItemId() == R.id.action_anim_veritical) {
+                            ((ISupportActivity) _mActivity).setFragmentAnimator(new DefaultVerticalAnimator());
+                            Toast.makeText(_mActivity, R.string.anim_v, Toast.LENGTH_SHORT).show();
+                            return true;
                         }
-                        popupMenu.dismiss();
+                        if (item.getItemId() == R.id.action_anim_horizontal) {
+                            ((ISupportActivity) _mActivity).setFragmentAnimator(new DefaultHorizontalAnimator());
+                            Toast.makeText(_mActivity, R.string.anim_h, Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
+                        ((ISupportActivity) _mActivity).setFragmentAnimator(new DefaultNoAnimator());
+                        Toast.makeText(_mActivity, R.string.anim_none, Toast.LENGTH_SHORT).show();
                         return true;
+                    } finally {
+                        popupMenu.dismiss();
                     }
-                });
-                popupMenu.show();
-                break;
+                }
+            });
+            popupMenu.show();
         }
         return true;
     }
