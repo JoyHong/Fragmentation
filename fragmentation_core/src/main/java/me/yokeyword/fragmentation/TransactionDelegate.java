@@ -671,7 +671,9 @@ class TransactionDelegate {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    handleNewBundle(to, stackToFragment);
+                    if (stackToFragment instanceof Fragment && !((Fragment) stackToFragment).isRemoving()) {
+                        handleNewBundle(to, stackToFragment);
+                    }
                 }
             });
             return true;
