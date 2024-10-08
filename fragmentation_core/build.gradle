@@ -36,16 +36,23 @@ dependencies {
     compileOnly "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
 }
 
-//afterEvaluate {
-//    publishing {
-//        publications {
-//            // Creates a Maven publication called "release".
-//            release(MavenPublication) {
-//                from components.release
-//                groupId = 'me.yokeyword.fragmentation'
-//                artifactId = 'fragmentation_core'
-//                version = '2.0'
-//            }
-//        }
-//    }
-//}
+afterEvaluate {
+    publishing {
+        publications {
+            create("release", MavenPublication) {
+                // 遍历 libraryVariants 查找 release 变体
+                android.libraryVariants.all { variant ->
+                    if (variant.buildType.name == "release") {
+                        // 使用 artifact 方法指定 AAR 文件
+                        artifact(variant.outputs.first().outputFile) {
+                            builtBy variant.assembleProvider.get()
+                        }
+                    }
+                }
+                groupId = 'me.yokeyword.fragmentation'
+                artifactId = 'fragmentation_core'
+                version = '2.0'
+            }
+        }
+    }
+}
