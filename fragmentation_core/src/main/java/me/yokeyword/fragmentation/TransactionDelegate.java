@@ -311,7 +311,6 @@ class TransactionDelegate {
                     @Override
                     public void onAnimationStart(Animation animation) {
                     }
-
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         fm.beginTransaction()
@@ -319,7 +318,6 @@ class TransactionDelegate {
                                 .remove(topFragment)
                                 .commitAllowingStateLoss();
                     }
-
                     @Override
                     public void onAnimationRepeat(Animation animation) {
                     }
