@@ -574,8 +574,18 @@ class TransactionDelegate {
             }
         };
 
-        mock.addView(fromView);
-        container.addView(mock);
+        ViewGroup parent = (ViewGroup) fromView.getParent();
+        if (parent != null) {
+            parent.removeView(fromView);
+        }
+        container.post(() -> {
+            if (fromView.getParent() == null) {
+                mock.addView(fromView);
+                container.addView(mock);
+            } else {
+                Log.e(TAG, "fromView still has parent after removeView(), skipping add to prevent crash.");
+            }
+        });
         return mock;
     }
 
