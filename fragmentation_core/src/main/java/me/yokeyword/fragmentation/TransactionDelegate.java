@@ -198,7 +198,7 @@ class TransactionDelegate {
                 }
                 handleAfterSaveInStateTransactionException(fm, "startWithPop()");
                 removeTopFragment(fm);
-                fm.popBackStack();
+                fm.popBackStackImmediate();
             }
         });
 
